@@ -7,6 +7,41 @@ form.addEventListener("submit", addTask);
 taskList.addEventListener("click", deleteTask);
 delTasksBtn.addEventListener("click", deleteAll);
 
+
+document.addEventListener('DOMContentLoaded', getTasksFromLocalStorage);
+
+function getTasksFromLocalStorage(){
+    let tasks;
+    if(localStorage.getItem('tasks') === null){
+        tasks = [];
+    } else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+    tasks.forEach(function (tasksElement){
+        // create <li> element
+        const li = document.createElement('li');
+        // add css class
+        li.className = 'collection-item';
+        // create text element
+        const text = document.createTextNode(tasksElement);
+        // add text to <li>
+        li.appendChild(text);
+        // create <a> element
+        const link = document.createElement('a');
+        // add css class
+        link.className = 'secondary-content';
+        // set href attribute to <a>
+        link.setAttribute('href', '#');
+        // add text content to <a>
+        link.appendChild(document.createTextNode('X'));
+        // add <a> to <li>
+        li.appendChild(link);
+        // add li to ul
+        const ul = document.querySelector('.collection');
+        ul.appendChild(li);
+    });
+}
+
 function deleteAll() {
     while(taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
@@ -23,7 +58,7 @@ function deleteAllTaskFromLocalStorage(){
 }
 
 function deleteTask(event) {
-    if(event.target.textContent === "x") {
+    if(event.target.textContent === "X") {
         if(confirm("Delete?")) {
             event.target.parentElement.remove();
             task = event.target.parentElement.firstChild.textContent;
