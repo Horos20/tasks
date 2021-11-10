@@ -49,10 +49,23 @@ function addTask(event) {
     const ul = document.querySelector(".collection");
     // Add <li> to <ul>
     ul.appendChild(li);
+    // Save task
+    addTaskToLocalStorage(task);
     // Clear input value
     taskInput.value = "";
     // Form submit event control
     event.preventDefault();
+}
+
+function addTaskToLocalStorage(task) {
+    let tasks;
+    if(localStorage.getItem("tasks") === null) {
+        tasks = [];
+    } else {
+        tasks = JSON.parse(localStorage.getItem("tasks"));
+    }
+    tasks.push(task)
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 form.addEventListener("submit" , addTask);
